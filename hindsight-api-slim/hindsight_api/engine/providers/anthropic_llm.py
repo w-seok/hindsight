@@ -292,7 +292,7 @@ class AnthropicLLM(LLMInterface):
         """
         from anthropic import APIConnectionError, APIStatusError, RateLimitError
 
-        start_time = time.time()
+        start_time = time.perf_counter()
 
         # Convert OpenAI-style messages to Anthropic format
         system_prompt = None
@@ -414,7 +414,7 @@ class AnthropicLLM(LLMInterface):
                         result = content
 
                 # Record metrics and log slow calls
-                duration = time.time() - start_time
+                duration = time.perf_counter() - start_time
                 response_usage = _usage_from_anthropic_response(response)
                 input_tokens = response_usage.input_tokens
                 output_tokens = response_usage.output_tokens
@@ -544,7 +544,7 @@ class AnthropicLLM(LLMInterface):
         """
         from anthropic import APIConnectionError, APIStatusError
 
-        start_time = time.time()
+        start_time = time.perf_counter()
 
         # Convert OpenAI tool format to Anthropic format
         anthropic_tools = []
@@ -673,7 +673,7 @@ class AnthropicLLM(LLMInterface):
 
                 # Record metrics
                 metrics = get_metrics_collector()
-                duration = time.time() - start_time
+                duration = time.perf_counter() - start_time
                 metrics.record_llm_call(
                     provider=self.provider,
                     model=self.model,

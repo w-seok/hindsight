@@ -507,7 +507,7 @@ class CodexLLM(LLMInterface):
                 back to schema-in-prompt + JSON parse, now hardened with a lenient
                 invalid-escape repair before giving up.
         """
-        start_time = time.time()
+        start_time = time.perf_counter()
 
         # Proactively refresh the OAuth access_token if it's near expiry.
         # Cheap when fresh: a JWT exp decode + comparison.
@@ -676,7 +676,7 @@ class CodexLLM(LLMInterface):
                     result = content
 
                 # Record metrics
-                duration = time.time() - start_time
+                duration = time.perf_counter() - start_time
                 metrics = get_metrics_collector()
                 metrics.record_llm_call(
                     provider=self.provider,
@@ -968,7 +968,7 @@ class CodexLLM(LLMInterface):
         Returns:
             LLMToolCallResult with content and/or tool_calls.
         """
-        start_time = time.time()
+        start_time = time.perf_counter()
 
         # Proactively refresh the OAuth access_token if it's near expiry.
         # Same rationale as in ``call()`` — keeps the request from leaving
@@ -1104,7 +1104,7 @@ class CodexLLM(LLMInterface):
                     )
                     raise auth_error
 
-            duration = time.time() - start_time
+            duration = time.perf_counter() - start_time
             metrics = get_metrics_collector()
             metrics.record_llm_call(
                 provider=self.provider,

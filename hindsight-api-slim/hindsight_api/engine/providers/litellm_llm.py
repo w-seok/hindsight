@@ -295,7 +295,7 @@ class LiteLLMLLM(LLMInterface):
         strict_schema: bool = False,
         attempt_context: Callable[[], AbstractAsyncContextManager[None]] | None = None,
     ) -> LLMCallResult:
-        start_time = time.time()
+        start_time = time.perf_counter()
 
         call_kwargs = self._build_common_kwargs(messages, max_completion_tokens, temperature)
 
@@ -396,7 +396,7 @@ class LiteLLMLLM(LLMInterface):
                 total_tokens = input_tokens + output_tokens
 
                 # Record metrics
-                duration = time.time() - start_time
+                duration = time.perf_counter() - start_time
                 metrics = get_metrics_collector()
                 metrics.record_llm_call(
                     provider=self.provider,
@@ -521,7 +521,7 @@ class LiteLLMLLM(LLMInterface):
         tool_choice: LLMToolChoice = LLM_TOOL_CHOICE_AUTO,
         attempt_context: Callable[[], AbstractAsyncContextManager[None]] | None = None,
     ) -> LLMToolCallResult:
-        start_time = time.time()
+        start_time = time.perf_counter()
 
         call_kwargs = self._build_common_kwargs(messages, max_completion_tokens, temperature)
         call_kwargs["tools"] = tools
@@ -579,7 +579,7 @@ class LiteLLMLLM(LLMInterface):
                 thoughts_tokens = response_usage.thoughts_tokens
 
                 # Record metrics
-                duration = time.time() - start_time
+                duration = time.perf_counter() - start_time
                 metrics = get_metrics_collector()
                 metrics.record_llm_call(
                     provider=self.provider,

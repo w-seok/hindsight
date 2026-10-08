@@ -455,7 +455,7 @@ class GeminiLLM(LLMInterface):
 
         Returns:
         """
-        start_time = time.time()
+        start_time = time.perf_counter()
 
         # Convert OpenAI-style messages to Gemini format. We ALWAYS build
         # system_instruction (even when a cache is in use): the config builder
@@ -615,7 +615,7 @@ class GeminiLLM(LLMInterface):
                     cached_tokens = cached_input_tokens
 
                 # Record metrics
-                duration = time.time() - start_time
+                duration = time.perf_counter() - start_time
                 metrics = get_metrics_collector()
                 metrics.record_llm_call(
                     provider=self.provider,
@@ -851,7 +851,7 @@ class GeminiLLM(LLMInterface):
         Returns:
             LLMToolCallResult with content and/or tool_calls.
         """
-        start_time = time.time()
+        start_time = time.perf_counter()
         using_cache = cached_prefix is not None
 
         # Convert tools to Gemini format. While the cache is in use the tool
@@ -1015,7 +1015,7 @@ class GeminiLLM(LLMInterface):
                     thoughts_tokens = getattr(response.usage_metadata, "thoughts_token_count", 0) or 0
 
                 # Record metrics
-                duration = time.time() - start_time
+                duration = time.perf_counter() - start_time
                 metrics = get_metrics_collector()
                 metrics.record_llm_call(
                     provider=self.provider,
